@@ -12,3 +12,9 @@
 
 (require 'ruby-tools)
 (require 'espuds)
+
+(Before
+ (switch-to-buffer
+  (get-buffer-create "*ruby-tools*"))
+ (erase-buffer)
+ (deactivate-mark))

@@ -50,9 +50,47 @@
 
 (defvar ruby-tools-mode-map
   (let ((map (make-sparse-keymap)))
-    
+    (define-key map (kbd "C-'") 'ruby-tools-symbol-to-single-quote-string)
+    (define-key map (kbd "C-\"") 'ruby-tools-symbol-to-double-quote-string)
     map)
   "Keymap for `ruby-tools-mode'.")
+
+(defun ruby-tools-symbol-to-single-quote-string ()
+  "Turn symbol at point to a single quote string."
+  (interactive)
+  (ruby-tools-symbol-to-string "'"))
+
+(defun ruby-tools-symbol-to-double-quote-string ()
+  "Turn symbol at point to a double quote string."
+  (interactive)
+  (ruby-tools-symbol-to-string "\""))
+
+(defun ruby-tools-symbol-at-point-p ()
+  "Checks if cursor is at a symbol or not."
+  (memq 'font-lock-constant-face (text-properties-at (point))))
+
+(defun ruby-tools-keyword-region ()
+  "Returns min and max points (as a list) for the keyword at point."
+  (list
+   (or
+    (previous-single-property-change (point) 'face)
+    (point-min))
+   (or
+    (next-single-property-change (point) 'face)
+    (point-max))))
+
+(defun ruby-tools-symbol-to-string (string-quote)
+  "Turn symbol at point to a STRING-QUOTE string."
+  (if (ruby-tools-symbol-at-point-p)
+      (let* ((region (ruby-tools-keyword-region))
+             (min (nth 0 region))
+             (max (nth 1 region)))
+        (save-excursion
+          (delete-region min (1+ min))
+          (goto-char min)
+          (insert string-quote)
+          (goto-char max)
+          (insert string-quote)))))
 
 ;;;###autoload
 (define-minor-mode ruby-tools-mode
