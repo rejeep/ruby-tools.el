@@ -1,3 +1,8 @@
+;; NOTE:
+;;   There is a reason for adding text properties in a few steps. This
+;;   is because when Emacs run in batch-mode, text properties are not
+;;   set correctly. Not sure why...
+
 (Then "^ruby-tools-mode should be active$"
       (lambda ()
         (assert ruby-tools-mode nil "Expected `ruby-tools-mode' to be started, but was not.")))
