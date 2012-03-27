@@ -46,6 +46,8 @@
 
 ;;; Code:
 
+(require 'ruby-mode)
+
 (defvar ruby-tools-mode-map
   (let ((map (make-sparse-keymap)))
     
