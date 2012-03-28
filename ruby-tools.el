@@ -52,6 +52,7 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-'") 'ruby-tools-symbol-to-single-quote-string)
     (define-key map (kbd "C-\"") 'ruby-tools-symbol-to-double-quote-string)
+    (define-key map (kbd "C-:") 'ruby-tools-string-to-symbol)
     map)
   "Keymap for `ruby-tools-mode'.")
 
@@ -65,9 +66,28 @@
   (interactive)
   (ruby-tools-symbol-to-string "\""))
 
+(defun ruby-tools-string-to-symbol ()
+  "Turn string at point to symbol."
+  (interactive)
+  (if (ruby-tools-string-at-point-p)
+      (let* ((region (ruby-tools-keyword-region))
+             (min (nth 0 region))
+             (max (nth 1 region))
+             (region (buffer-substring-no-properties min max)))
+        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
+            (save-excursion
+              (delete-region min (1+ min))
+              (goto-char min)
+              (insert ":")
+              (delete-region max (1- max)))))))
+
 (defun ruby-tools-symbol-at-point-p ()
   "Checks if cursor is at a symbol or not."
   (memq 'font-lock-constant-face (text-properties-at (point))))
+
+(defun ruby-tools-string-at-point-p ()
+  "Checks if cursor is at a string or not."
+  (memq 'font-lock-string-face (text-properties-at (point))))
 
 (defun ruby-tools-keyword-region ()
   "Returns min and max points (as a list) for the keyword at point."

@@ -7,7 +7,7 @@
       (lambda ()
         (assert ruby-tools-mode nil "Expected `ruby-tools-mode' to be started, but was not.")))
 
-(And "^I place the cursor on the symbol \"\\(.+\\)\"$"
+(When "^I place the cursor on the symbol \"\\(.+\\)\"$"
      (lambda (symbol)
        (goto-char (point-min))
        (let* ((max
@@ -19,7 +19,20 @@
          (add-text-properties min max '(face font-lock-constant-face))
          (goto-char middle))))
 
-(And "^I place the cursor on \"\\(.+\\)\"$"
+(When "^I place the cursor on the string \"\\(.+\\)\"$"
+     (lambda (symbol)
+       (goto-char (point-min))
+       (let* ((string-quote-regex "['\"]")
+              (max
+               (re-search-forward (concat string-quote-regex symbol string-quote-regex)))
+              (min
+               (re-search-backward (concat string-quote-regex symbol string-quote-regex)))
+              (middle
+               (/ (+ max min) 2)))
+         (add-text-properties min max '(face font-lock-string-face))
+         (goto-char middle))))
+
+(When "^I place the cursor on \"\\(.+\\)\"$"
      (lambda (text)
        (goto-char (point-min))
        (let* ((max
