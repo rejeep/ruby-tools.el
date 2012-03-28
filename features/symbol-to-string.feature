@@ -30,7 +30,7 @@ Feature: Symbol To String
     And I press "C-""
     Then I should see "foo("bar")"
 
-  Scenario: Turn symbol to string when not in symbol
+  Scenario: Do not turn symbol to string when not on symbol
     When I insert "foo(:bar)"
     And I turn on ruby-mode
     And I place the cursor on "foo"
