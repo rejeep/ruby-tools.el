@@ -82,15 +82,15 @@
               (delete-region max (1- max)))))))
 
 (defun ruby-tools-symbol-at-point-p ()
-  "Checks if cursor is at a symbol or not."
+  "Check if cursor is at a symbol or not."
   (memq 'font-lock-constant-face (text-properties-at (point))))
 
 (defun ruby-tools-string-at-point-p ()
-  "Checks if cursor is at a string or not."
+  "Check if cursor is at a string or not."
   (memq 'font-lock-string-face (text-properties-at (point))))
 
 (defun ruby-tools-keyword-region ()
-  "Returns min and max points (as a list) for the keyword at point."
+  "Return min and max points (as a list) for the keyword at point."
   (list
    (or
     (previous-single-property-change (point) 'face)
