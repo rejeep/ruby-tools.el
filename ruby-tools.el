@@ -53,8 +53,26 @@
     (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
     (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
     (define-key map (kbd "C-:") 'ruby-tools-string-to-symbol)
+    (define-key map (kbd "#") 'ruby-tools-interpolate)
     map)
   "Keymap for `ruby-tools-mode'.")
+
+(defun ruby-tools-interpolate ()
+  "Interpolate with #{} in some places."
+  (interactive)
+  (insert "#")
+  (when (or
+         (and
+          (looking-at "[^\"]*\"")
+          (looking-back "\"[^\"]*"))
+         (and
+          (looking-at "[^`]*`")
+          (looking-back "`[^`]*"))
+         (and
+          (looking-at "[^)]*)")
+          (looking-back "%([^(]*")))
+    (insert "{}")
+    (forward-char -1)))
 
 (defun ruby-tools-to-single-quote-string ()
   "Turn symbol at point to a single quote string."
