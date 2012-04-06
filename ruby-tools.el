@@ -71,6 +71,7 @@
    (looking-back "['\"][^\"']*")))
 
 (defun ruby-tools-symbol-region ()
+  "Return region for symbol at point."
   (list
    (save-excursion
      (search-backward ":" (line-beginning-position) t))
@@ -80,6 +81,7 @@
        (line-end-position)))))
 
 (defun ruby-tools-string-region ()
+  "Return region for string at point."
   (list
    (save-excursion
      (re-search-backward "['\"][^\"']*" (line-beginning-position) t))
