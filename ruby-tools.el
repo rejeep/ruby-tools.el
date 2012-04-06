@@ -112,13 +112,10 @@
       (let* ((region (ruby-tools-string-region))
              (min (nth 0 region))
              (max (nth 1 region))
-             (region (buffer-substring-no-properties min max)))
-        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
-            (save-excursion
-              (delete-region min (1+ min))
-              (goto-char min)
-              (insert ":")
-              (delete-region max (1- max)))))))
+             (content (buffer-substring-no-properties (1+ min) (1- max))))
+        (when (string-match-p "^[a-ZA-Z_][a-ZA-Z0-9_]+$" content)
+          (delete-region min max)
+          (insert (concat ":" content))))))
 
 (defun ruby-tools-to-single-quote-string ()
   (interactive)
