@@ -36,6 +36,20 @@ Feature: String To Symbol
     And I place the cursor on the string "foo_bar"
     And I press "C-:"
     Then I should see ":foo_bar"
+    
+  Scenario: Turn string to symbol when at beginning of string
+    When I insert "'foo'"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-:"
+    Then I should see ":foo"
+    
+  Scenario: Turn string to symbol when at end of string
+    When I insert "'foo'"
+    And I turn on ruby-mode
+    And I go to point "4"
+    And I press "C-:"
+    Then I should see ":foo"
 
   Scenario: Do not turn symbol to string when not on a string
     When I insert "foo('bar')"

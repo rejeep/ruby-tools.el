@@ -50,27 +50,27 @@
 
 (defvar ruby-tools-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-'") 'ruby-tools-symbol-to-single-quote-string)
-    (define-key map (kbd "C-\"") 'ruby-tools-symbol-to-double-quote-string)
+    (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
+    (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
     (define-key map (kbd "C-:") 'ruby-tools-string-to-symbol)
     map)
   "Keymap for `ruby-tools-mode'.")
 
-(defun ruby-tools-symbol-to-single-quote-string ()
+(defun ruby-tools-to-single-quote-string ()
   "Turn symbol at point to a single quote string."
   (interactive)
-  (ruby-tools-symbol-to-string "'"))
+  (ruby-tools-to-string "'"))
 
-(defun ruby-tools-symbol-to-double-quote-string ()
+(defun ruby-tools-to-double-quote-string ()
   "Turn symbol at point to a double quote string."
   (interactive)
-  (ruby-tools-symbol-to-string "\""))
+  (ruby-tools-to-string "\""))
 
 (defun ruby-tools-string-to-symbol ()
   "Turn string at point to symbol."
   (interactive)
   (if (ruby-tools-string-at-point-p)
-      (let* ((region (ruby-tools-keyword-region))
+      (let* ((region (ruby-tools-string-region))
              (min (nth 0 region))
              (max (nth 1 region))
              (region (buffer-substring-no-properties min max)))
@@ -83,26 +83,42 @@
 
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
-  (memq 'font-lock-constant-face (text-properties-at (point))))
+  (and
+   (not (ruby-tools-string-at-point-p))
+   (or
+    (memq 'font-lock-constant-face (text-properties-at (point)))
+    (and
+     (looking-at "[A-Za-z0-9_]+")
+     (looking-back ":[A-Za-z0-9_]*")))))
 
 (defun ruby-tools-string-at-point-p ()
   "Check if cursor is at a string or not."
-  (memq 'font-lock-string-face (text-properties-at (point))))
+  (or
+   (memq 'font-lock-string-face (text-properties-at (point)))
+   (and
+    (looking-at "[^\"']+['\"]")
+    (looking-back "['\"][^\"']*"))))
 
-(defun ruby-tools-keyword-region ()
-  "Return min and max points (as a list) for the keyword at point."
+(defun ruby-tools-symbol-region ()
   (list
-   (or
-    (previous-single-property-change (point) 'face)
-    (point-min))
-   (or
-    (next-single-property-change (point) 'face)
-    (point-max))))
+   (save-excursion
+     (search-backward ":" (line-beginning-position) t))
+   (save-excursion
+     (if (re-search-forward "[^A-Za-z0-9_]" (line-end-position) t)
+         (1- (point))
+       (line-end-position)))))
 
-(defun ruby-tools-symbol-to-string (string-quote)
+(defun ruby-tools-string-region ()
+  (list
+   (save-excursion
+     (re-search-backward "['\"][^\"']*" (line-beginning-position) t))
+   (save-excursion
+     (re-search-forward "[^\"']+['\"]" (line-end-position) t))))
+
+(defun ruby-tools-to-string (string-quote)
   "Turn symbol at point to a STRING-QUOTE string."
   (if (ruby-tools-symbol-at-point-p)
-      (let* ((region (ruby-tools-keyword-region))
+      (let* ((region (ruby-tools-symbol-region))
              (min (nth 0 region))
              (max (nth 1 region)))
         (save-excursion
@@ -110,7 +126,23 @@
           (goto-char min)
           (insert string-quote)
           (goto-char max)
-          (insert string-quote)))))
+          (insert string-quote)))
+    (if (ruby-tools-string-at-point-p)
+        (let* ((region (ruby-tools-string-region))
+               (min (nth 0 region))
+               (max (nth 1 region))
+               (string-char
+                (char-to-string (char-after min)))
+               (other-string-char
+                (if (equal string-char "'") "\"" "'")))
+          (unless (equal string-quote string-char)
+            (save-excursion
+              (delete-region min (1+ min))
+              (goto-char min)
+              (insert other-string-char)
+              (goto-char max)
+              (delete-region max (1- max))
+              (insert other-string-char)))))))
 
 ;;;###autoload
 (define-minor-mode ruby-tools-mode
