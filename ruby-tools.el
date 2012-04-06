@@ -50,10 +50,8 @@
 
 (defvar ruby-tools-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-'")
-      (lambda () (interactive) (ruby-tools-to-string "'")))
-    (define-key map (kbd "C-\"")
-      (lambda () (interactive) (ruby-tools-to-string "\"")))
+    (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
+    (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
     (define-key map (kbd "C-:") 'ruby-tools-to-symbol)
     (define-key map (kbd "#") 'ruby-tools-interpolate)
     map)
@@ -105,6 +103,29 @@
     (insert "{}")
     (forward-char -1)))
 
+(defun ruby-tools-to-symbol ()
+  "Turn string at point to symbol."
+  (interactive)
+  (if (ruby-tools-string-at-point-p)
+      (let* ((region (ruby-tools-string-region))
+             (min (nth 0 region))
+             (max (nth 1 region))
+             (region (buffer-substring-no-properties min max)))
+        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
+            (save-excursion
+              (delete-region min (1+ min))
+              (goto-char min)
+              (insert ":")
+              (delete-region max (1- max)))))))
+
+(defun ruby-tools-to-single-quote-string ()
+  (interactive)
+  (ruby-tools-to-string "'"))
+
+(defun ruby-tools-to-double-quote-string ()
+  (interactive)
+  (ruby-tools-to-string "\""))
+
 (defun ruby-tools-to-string (string-quote)
   "Convert symbol or string at point to string."
   (let* ((at-string
@@ -124,20 +145,6 @@
         (insert
          (format "%s%s%s" string-quote content string-quote))))))
 
-(defun ruby-tools-to-symbol ()
-  "Turn string at point to symbol."
-  (interactive)
-  (if (ruby-tools-string-at-point-p)
-      (let* ((region (ruby-tools-string-region))
-             (min (nth 0 region))
-             (max (nth 1 region))
-             (region (buffer-substring-no-properties min max)))
-        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
-            (save-excursion
-              (delete-region min (1+ min))
-              (goto-char min)
-              (insert ":")
-              (delete-region max (1- max)))))))
 
 ;;;###autoload
 (define-minor-mode ruby-tools-mode
