@@ -102,7 +102,6 @@
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
   (and
-   (not (ruby-tools-string-at-point-p))
    (looking-at "[A-Za-z0-9_]+")
    (looking-back ":[A-Za-z0-9_]*")))
 
@@ -129,33 +128,23 @@
      (re-search-forward "[^\"']+['\"]" (line-end-position) t))))
 
 (defun ruby-tools-to-string (string-quote)
-  "Turn symbol at point to a STRING-QUOTE string."
-  (if (ruby-tools-symbol-at-point-p)
-      (let* ((region (ruby-tools-symbol-region))
+  "Convert symbol or string at point to string."
+  (let* ((at-string
+          (ruby-tools-string-at-point-p))
+         (at-symbol
+          (and (not at-string) (ruby-tools-symbol-at-point-p))))
+    (when (or at-string at-symbol)
+      (let* ((region
+              (or
+               (and at-symbol (ruby-tools-symbol-region))
+               (and at-string (ruby-tools-string-region))))
              (min (nth 0 region))
-             (max (nth 1 region)))
-        (save-excursion
-          (delete-region min (1+ min))
-          (goto-char min)
-          (insert string-quote)
-          (goto-char max)
-          (insert string-quote)))
-    (if (ruby-tools-string-at-point-p)
-        (let* ((region (ruby-tools-string-region))
-               (min (nth 0 region))
-               (max (nth 1 region))
-               (string-char
-                (char-to-string (char-after min)))
-               (other-string-char
-                (if (equal string-char "'") "\"" "'")))
-          (unless (equal string-quote string-char)
-            (save-excursion
-              (delete-region min (1+ min))
-              (goto-char min)
-              (insert other-string-char)
-              (goto-char max)
-              (delete-region max (1- max))
-              (insert other-string-char)))))))
+             (max (nth 1 region))
+             (content
+              (buffer-substring-no-properties (1+ min) (if at-symbol max (1- max)))))
+        (delete-region min max)
+        (insert
+         (format "%s%s%s" string-quote content string-quote))))))
 
 ;;;###autoload
 (define-minor-mode ruby-tools-mode
