@@ -103,19 +103,14 @@
   "Check if cursor is at a symbol or not."
   (and
    (not (ruby-tools-string-at-point-p))
-   (or
-    (memq 'font-lock-constant-face (text-properties-at (point)))
-    (and
-     (looking-at "[A-Za-z0-9_]+")
-     (looking-back ":[A-Za-z0-9_]*")))))
+   (looking-at "[A-Za-z0-9_]+")
+   (looking-back ":[A-Za-z0-9_]*")))
 
 (defun ruby-tools-string-at-point-p ()
   "Check if cursor is at a string or not."
-  (or
-   (memq 'font-lock-string-face (text-properties-at (point)))
-   (and
-    (looking-at "[^\"']+['\"]")
-    (looking-back "['\"][^\"']*"))))
+  (and
+   (looking-at "[^\"']+['\"]")
+   (looking-back "['\"][^\"']*")))
 
 (defun ruby-tools-symbol-region ()
   (list
