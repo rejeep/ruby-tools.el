@@ -52,7 +52,7 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
     (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
-    (define-key map (kbd "C-:") 'ruby-tools-string-to-symbol)
+    (define-key map (kbd "C-:") 'ruby-tools-to-symbol)
     (define-key map (kbd "#") 'ruby-tools-interpolate)
     map)
   "Keymap for `ruby-tools-mode'.")
@@ -83,21 +83,6 @@
   "Turn symbol at point to a double quote string."
   (interactive)
   (ruby-tools-to-string "\""))
-
-(defun ruby-tools-string-to-symbol ()
-  "Turn string at point to symbol."
-  (interactive)
-  (if (ruby-tools-string-at-point-p)
-      (let* ((region (ruby-tools-string-region))
-             (min (nth 0 region))
-             (max (nth 1 region))
-             (region (buffer-substring-no-properties min max)))
-        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
-            (save-excursion
-              (delete-region min (1+ min))
-              (goto-char min)
-              (insert ":")
-              (delete-region max (1- max)))))))
 
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
@@ -145,6 +130,21 @@
         (delete-region min max)
         (insert
          (format "%s%s%s" string-quote content string-quote))))))
+
+(defun ruby-tools-to-symbol ()
+  "Turn string at point to symbol."
+  (interactive)
+  (if (ruby-tools-string-at-point-p)
+      (let* ((region (ruby-tools-string-region))
+             (min (nth 0 region))
+             (max (nth 1 region))
+             (region (buffer-substring-no-properties min max)))
+        (if (string-match-p "^['\"][a-ZA-Z_][a-ZA-Z0-9_]+['\"]$" region)
+            (save-excursion
+              (delete-region min (1+ min))
+              (goto-char min)
+              (insert ":")
+              (delete-region max (1- max)))))))
 
 ;;;###autoload
 (define-minor-mode ruby-tools-mode
