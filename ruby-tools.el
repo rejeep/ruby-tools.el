@@ -59,22 +59,6 @@
     map)
   "Keymap for `ruby-tools-mode'.")
 
-(defun ruby-tools-interpolate ()
-  "Interpolate with #{} in some places."
-  (interactive)
-  (insert "#")
-  (when (or
-         (and
-          (looking-at "[^\"]*\"")
-          (looking-back "\"[^\"]*"))
-         (and
-          (looking-at "[^`]*`")
-          (looking-back "`[^`]*"))
-         (and
-          (looking-at "[^)]*)")
-          (looking-back "%([^(]*")))
-    (insert "{}")
-    (forward-char -1)))
 
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
@@ -103,6 +87,23 @@
      (re-search-backward "['\"][^\"']*" (line-beginning-position) t))
    (save-excursion
      (re-search-forward "[^\"']+['\"]" (line-end-position) t))))
+
+(defun ruby-tools-interpolate ()
+  "Interpolate with #{} in some places."
+  (interactive)
+  (insert "#")
+  (when (or
+         (and
+          (looking-at "[^\"]*\"")
+          (looking-back "\"[^\"]*"))
+         (and
+          (looking-at "[^`]*`")
+          (looking-back "`[^`]*"))
+         (and
+          (looking-at "[^)]*)")
+          (looking-back "%([^(]*")))
+    (insert "{}")
+    (forward-char -1)))
 
 (defun ruby-tools-to-string (string-quote)
   "Convert symbol or string at point to string."
