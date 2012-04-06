@@ -64,3 +64,10 @@ Feature: String To Symbol
     And I go to word "foo bar"
     And I press "C-:"
     Then I should see "'foo bar'"
+
+ Scenario: Turn empty string to symbol
+    When I insert "''"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-:"
+    Then I should see ":"

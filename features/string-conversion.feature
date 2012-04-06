@@ -43,3 +43,17 @@ Feature: String conversion
     And I go to word "foo"
     And I press "C-""
     Then I should see ""foo""
+
+  Scenario: Turn empty single quote string to empty double quote string
+    When I insert "''"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-""
+    Then I should see """"
+
+  Scenario: Turn empty double quote string to empty single quote string
+    When I insert """"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-'"
+    Then I should see "''"

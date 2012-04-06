@@ -57,3 +57,10 @@ Feature: Symbol To String
     And I go to word "bar"
     And I press "C-'"
     Then I should see "'foo :bar baz'"
+
+  Scenario: Turn empty symbol to string
+    When I insert ":"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-'"
+    Then I should see "''"

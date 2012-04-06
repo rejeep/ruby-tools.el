@@ -61,13 +61,13 @@
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
   (and
-   (looking-at "[A-Za-z0-9_]+")
+   (looking-at "[A-Za-z0-9_]*")
    (looking-back ":[A-Za-z0-9_]*")))
 
 (defun ruby-tools-string-at-point-p ()
   "Check if cursor is at a string or not."
   (and
-   (looking-at "[^\"']+['\"]")
+   (looking-at "[^\"']*['\"]")
    (looking-back "['\"][^\"']*")))
 
 (defun ruby-tools-symbol-region ()
@@ -86,7 +86,7 @@
    (save-excursion
      (re-search-backward "['\"][^\"']*" (line-beginning-position) t))
    (save-excursion
-     (re-search-forward "[^\"']+['\"]" (line-end-position) t))))
+     (re-search-forward "[^\"']*['\"]" (line-end-position) t))))
 
 (defun ruby-tools-interpolate ()
   "Interpolate with #{} in some places."
@@ -113,7 +113,7 @@
              (min (nth 0 region))
              (max (nth 1 region))
              (content (buffer-substring-no-properties (1+ min) (1- max))))
-        (when (string-match-p "^[a-ZA-Z_][a-ZA-Z0-9_]+$" content)
+        (when (string-match-p "^\\([a-ZA-Z_][a-ZA-Z0-9_]+\\)?$" content)
           (delete-region min max)
           (insert (concat ":" content))))))
 
