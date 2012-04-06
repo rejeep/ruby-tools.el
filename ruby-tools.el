@@ -50,8 +50,10 @@
 
 (defvar ruby-tools-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
-    (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
+    (define-key map (kbd "C-'")
+      (lambda () (interactive) (ruby-tools-to-string "'")))
+    (define-key map (kbd "C-\"")
+      (lambda () (interactive) (ruby-tools-to-string "\"")))
     (define-key map (kbd "C-:") 'ruby-tools-to-symbol)
     (define-key map (kbd "#") 'ruby-tools-interpolate)
     map)
@@ -73,16 +75,6 @@
           (looking-back "%([^(]*")))
     (insert "{}")
     (forward-char -1)))
-
-(defun ruby-tools-to-single-quote-string ()
-  "Turn symbol at point to a single quote string."
-  (interactive)
-  (ruby-tools-to-string "'"))
-
-(defun ruby-tools-to-double-quote-string ()
-  "Turn symbol at point to a double quote string."
-  (interactive)
-  (ruby-tools-to-string "\""))
 
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
