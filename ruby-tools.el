@@ -58,17 +58,17 @@
   "Keymap for `ruby-tools-mode'.")
 
 
+(defun ruby-tools-looking-around (back at)
+  "Check if looking backwards at BACK and forward at AT."
+  (and (looking-at at) (looking-back back)))
+
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
-  (and
-   (looking-at "[A-Za-z0-9_]*")
-   (looking-back ":[A-Za-z0-9_]*")))
+  (ruby-tools-looking-around ":[A-Za-z0-9_]*" "[A-Za-z0-9_]*"))
 
 (defun ruby-tools-string-at-point-p ()
   "Check if cursor is at a string or not."
-  (and
-   (looking-at "[^\"']*['\"]")
-   (looking-back "['\"][^\"']*")))
+  (ruby-tools-looking-around "['\"][^\"']*" "[^\"']*['\"]"))
 
 (defun ruby-tools-symbol-region ()
   "Return region for symbol at point."
@@ -93,15 +93,9 @@
   (interactive)
   (insert "#")
   (when (or
-         (and
-          (looking-at "[^\"]*\"")
-          (looking-back "\"[^\"]*"))
-         (and
-          (looking-at "[^`]*`")
-          (looking-back "`[^`]*"))
-         (and
-          (looking-at "[^)]*)")
-          (looking-back "%([^(]*")))
+         (ruby-tools-looking-around "\"[^\"]*" "[^\"]*\"")
+         (ruby-tools-looking-around "`[^`]*"   "[^`]*`")
+         (ruby-tools-looking-around "%([^(]*"  "[^)]*)"))
     (insert "{}")
     (forward-char -1)))
 
