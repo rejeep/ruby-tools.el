@@ -81,6 +81,6 @@ Feature: Interpolation
   Scenario: Do not interpolate when in single quote string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I place the cursor on the string "foo"
+    And I go to point "3"
     And I press "#"
     Then I should see "'f#oo'"
