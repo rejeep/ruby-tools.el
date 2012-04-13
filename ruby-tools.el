@@ -140,6 +140,10 @@
              (max (nth 1 region))
              (content
               (buffer-substring-no-properties (1+ min) (if at-symbol max (1- max)))))
+        (setq content
+              (if (equal string-quote "'")
+                  (replace-regexp-in-string "\\\\\"" "\"" (replace-regexp-in-string "\\([^\\\\]\\)'" "\\1\\\\'" content))
+                (replace-regexp-in-string "\\\\\'" "'" (replace-regexp-in-string "\\([^\\\\]\\)\"" "\\1\\\\\"" content))))
         (delete-region min max)
         (insert
          (format "%s%s%s" string-quote content string-quote))))))

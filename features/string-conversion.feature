@@ -57,3 +57,31 @@ Feature: String conversion
     And I go to point "2"
     And I press "C-'"
     Then I should see "''"
+
+  Scenario: Turn single quote string with quotes to double quote string
+    When I insert "'foo \' bar'"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-""
+    Then I should see ""foo ' bar""
+
+  Scenario: Turn single quote string with double quote inside to double quote string
+    When I insert "'foo " bar'"
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-""
+    Then I should see ""foo \" bar""
+
+  Scenario: Turn double quote string with quotes to single quote string
+    When I insert ""foo \" bar""
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-'"
+    Then I should see "'foo " bar'"
+
+  Scenario: Turn double quote string with single quote inside to single quote string
+    When I insert ""foo ' bar""
+    And I turn on ruby-mode
+    And I go to point "2"
+    And I press "C-'"
+    Then I should see "'foo \' bar'"
