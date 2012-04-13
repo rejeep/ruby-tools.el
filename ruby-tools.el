@@ -68,7 +68,7 @@
 
 (defun ruby-tools-string-at-point-p ()
   "Check if cursor is at a string or not."
-  (ruby-tools-looking-around "['\"][^\"']*" "[^\"']*['\"]"))
+  (ruby-tools-string-region))
 
 (defun ruby-tools-symbol-region ()
   "Return region for symbol at point."
@@ -82,11 +82,17 @@
 
 (defun ruby-tools-string-region ()
   "Return region for string at point."
-  (list
-   (save-excursion
-     (re-search-backward "['\"][^\"']*" (line-beginning-position) t))
-   (save-excursion
-     (re-search-forward "[^\"']*['\"]" (line-end-position) t))))
+  (let ((orig-point (point)) (regex "\\([\"']\\)\\(?:[^\\1]\\|\\\\.\\)*?\\(\\1\\)") beg end)
+    (save-excursion
+      (goto-char (line-beginning-position))
+      (while (and (re-search-forward regex (line-end-position) t) (not (and beg end)))
+        (let ((match-beg (match-beginning 0)) (match-end (match-end 0)))
+          (when (and
+                 (> orig-point match-beg)
+                 (< orig-point match-end))
+            (setq beg match-beg)
+            (setq end match-end))))
+      (and beg end (list beg end)))))
 
 (defun ruby-tools-interpolate ()
   "Interpolate with #{} in some places."
