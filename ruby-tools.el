@@ -114,8 +114,10 @@
              (max (nth 1 region))
              (content (buffer-substring-no-properties (1+ min) (1- max))))
         (when (string-match-p "^\\([a-ZA-Z_][a-ZA-Z0-9_]+\\)?$" content)
-          (delete-region min max)
-          (insert (concat ":" content))))))
+          (let ((orig-point (point)))
+            (delete-region min max)
+            (insert (concat ":" content))
+            (goto-char orig-point))))))
 
 (defun ruby-tools-to-single-quote-string ()
   (interactive)
@@ -144,9 +146,11 @@
               (if (equal string-quote "'")
                   (replace-regexp-in-string "\\\\\"" "\"" (replace-regexp-in-string "\\([^\\\\]\\)'" "\\1\\\\'" content))
                 (replace-regexp-in-string "\\\\\'" "'" (replace-regexp-in-string "\\([^\\\\]\\)\"" "\\1\\\\\"" content))))
-        (delete-region min max)
-        (insert
-         (format "%s%s%s" string-quote content string-quote))))))
+        (let ((orig-point (point)))
+          (delete-region min max)
+          (insert
+           (format "%s%s%s" string-quote content string-quote))
+          (goto-char orig-point))))))
 
 
 ;;;###autoload

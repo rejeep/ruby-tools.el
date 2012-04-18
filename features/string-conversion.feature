@@ -5,44 +5,50 @@ Feature: String conversion
   Scenario: Turn single quote string to double quote string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to word "foo"
+    And I go to point "3"
     And I press "C-""
     Then I should see ""foo""
+    And the cursor should be between "f" and "oo"
 
   Scenario: Turn single quote string to double quote string in method call
     When I insert "foo('bar')"
     And I turn on ruby-mode
-    And I go to word "bar"
+    And I go to point "7"
     And I press "C-""
     Then I should see "foo("bar")"
+    And the cursor should be between "b" and "ar"
 
   Scenario: Do not turn to single quote string when on single quote string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to word "foo"
+    And I go to point "3"
     And I press "C-'"
     Then I should see "'foo'"
+    And the cursor should be between "f" and "oo"
     
   Scenario: Turn double quote string to single quote string
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to word "foo"
+    And I go to point "3"
     And I press "C-'"
     Then I should see "'foo'"
+    And the cursor should be between "f" and "oo"
     
   Scenario: Turn double quote string to single quote string in method call
     When I insert "foo("bar")"
     And I turn on ruby-mode
-    And I go to word "bar"
+    And I go to point "7"
     And I press "C-'"
     Then I should see "foo('bar')"
+    And the cursor should be between "b" and "ar"
 
   Scenario: Do not turn to double quote string when on double quote string
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to word "foo"
+    And I go to point "3"
     And I press "C-""
     Then I should see ""foo""
+    And the cursor should be between "f" and "oo"
 
   Scenario: Turn empty single quote string to empty double quote string
     When I insert "''"
@@ -50,6 +56,7 @@ Feature: String conversion
     And I go to point "2"
     And I press "C-""
     Then I should see """"
+    And the cursor should be between """ and """
 
   Scenario: Turn empty double quote string to empty single quote string
     When I insert """"
@@ -57,31 +64,36 @@ Feature: String conversion
     And I go to point "2"
     And I press "C-'"
     Then I should see "''"
+    And the cursor should be between "'" and "'"
 
   Scenario: Turn single quote string with quotes to double quote string
     When I insert "'foo \' bar'"
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to point "4"
     And I press "C-""
     Then I should see ""foo ' bar""
+    And the cursor should be between ""fo" and "o ' bar""
 
   Scenario: Turn single quote string with double quote inside to double quote string
     When I insert "'foo " bar'"
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to point "4"
     And I press "C-""
     Then I should see ""foo \" bar""
+    And the cursor should be between ""fo" and "o \" bar""
 
   Scenario: Turn double quote string with quotes to single quote string
     When I insert ""foo \" bar""
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to point "4"
     And I press "C-'"
     Then I should see "'foo " bar'"
+    And the cursor should be between "'fo" and "o " bar'"
 
   Scenario: Turn double quote string with single quote inside to single quote string
     When I insert ""foo ' bar""
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to point "4"
     And I press "C-'"
     Then I should see "'foo \' bar'"
+    And the cursor should be between "'fo" and "o \' bar'"
