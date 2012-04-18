@@ -53,6 +53,7 @@
     (define-key map (kbd "C-'") 'ruby-tools-to-single-quote-string)
     (define-key map (kbd "C-\"") 'ruby-tools-to-double-quote-string)
     (define-key map (kbd "C-:") 'ruby-tools-to-symbol)
+    (define-key map (kbd "C-;") 'ruby-tools-clear-string)
     (define-key map (kbd "#") 'ruby-tools-interpolate)
     map)
   "Keymap for `ruby-tools-mode'.")
@@ -151,6 +152,15 @@
           (insert
            (format "%s%s%s" string-quote content string-quote))
           (goto-char orig-point))))))
+
+(defun ruby-tools-clear-string ()
+  "Clear string at point."
+  (interactive)
+  (when (ruby-tools-string-at-point-p)
+    (let* ((region (ruby-tools-string-region))
+           (min (nth 0 region))
+           (max (nth 1 region)))
+      (delete-region (+ min 1) (- max 1)))))
 
 
 ;;;###autoload
