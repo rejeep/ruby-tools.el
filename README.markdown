@@ -81,6 +81,11 @@ Place cursor on `bar`, then press `#` and you will see:
     `b#{}ar`
     %(b#{}ar)
 
+## TODO
+
+* Convert `do/end` block to `{/}` and reverse
+* Add/remove parenthesis on function call
+
 ## Contribution
 Contribution is much welcome! Ruby tools is tested using
 [Ecukes](http://ecukes.info). When Adding new features, please write
