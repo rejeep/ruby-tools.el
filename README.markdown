@@ -35,7 +35,7 @@ Place cursor on `bar`, then press `C-:` and you will see:
     foo(:bar)
     foo(:bar)
 
-### Convert single quote string to double quote string and reverse
+### Convert single quote string to double quote string
 
 Insert:
 
