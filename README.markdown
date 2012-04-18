@@ -18,7 +18,7 @@ Once started, this functionality is available:
 Insert:
 
     foo(:bar)
-    
+
 Place cursor on `:bar`, then press `C-'` and you will see:
 
     foo('bar')
@@ -29,9 +29,10 @@ Insert:
 
     foo('bar')
     foo("bar")
-    
+
 Place cursor on `bar`, then press `C-:` and you will see:
 
+    foo(:bar)
     foo(:bar)
 
 ### Convert single quote string to double quote string and reverse
@@ -39,7 +40,7 @@ Place cursor on `bar`, then press `C-:` and you will see:
 Insert:
 
     foo('bar')
-    
+
 Place cursor on `bar`, then press `C-"` and you will see:
 
     foo("bar")
@@ -48,8 +49,8 @@ Place cursor on `bar`, then press `C-"` and you will see:
 
 Insert:
 
-foo("bar")
-    
+    foo("bar")
+
 Place cursor on `bar`, then press `C-'` and you will see:
 
     foo('bar')
@@ -59,44 +60,26 @@ Place cursor on `bar`, then press `C-'` and you will see:
 Insert:
 
     foo('bar')
-    
+
 Place cursor on `bar`, then press `C-;` and you will see:
 
     foo('')
-    
+
 ### String interpolation
 
 Insert:
 
     foo('bar')
-    
+    foo("bar")
+    `bar`
+    %(bar)
+
 Place cursor on `bar`, then press `#` and you will see:
 
     foo('b#ar')
-    
-Insert:
-
-    foo("bar")
-    
-Place cursor on `bar`, then press `#` and you will see:
-
-    foo('b#{}ar')
-    
-Insert:
-
-    `foo`
-    
-Place cursor on `foo`, then press `#` and you will see:
-
-    `f#{}oo`
-    
-Insert:
-
-    %(foo)
-    
-Place cursor on `foo`, then press `#` and you will see:
-
-    %(f#{}oo)
+    foo("b#{}ar")
+    `b#{}ar`
+    %(b#{}ar)
 
 ## Contribution
 Contribution is much welcome! Ruby tools is tested using
@@ -108,7 +91,7 @@ To fetch Ecukes:
     $ cd /path/to/ruby-tools
     $ git submodule init
     $ git submodule update
-    
+
 Run the tests with:
 
     $ ./util/ecukes/ecukes features
