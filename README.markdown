@@ -1,6 +1,7 @@
 # Ruby tools
-Ruby tools mode is a minor mode for Emacs containing various handy
-functions for `ruby-mode`.
+Ruby tools is a collection of handy functions for `ruby-mode`. You can
+turn a string to symbol, symbol to string, single to double quote
+string, double to single quote string clear string, interpolate and more...
 
 ## Installation
 I recommend installing via ELPA, but manual installation is simple as well:
