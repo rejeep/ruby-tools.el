@@ -11,9 +11,9 @@ I recommend installing via ELPA, but manual installation is simple as well:
 ## Usage
 When `ruby-mode` is started, `ruby-tools-mode` will automatically start.
 
-### Functionality
+Once started, this functionality is available:
 
-#### Convert symbol to string
+### Convert symbol to string
 
 Insert:
 
@@ -23,7 +23,7 @@ Place cursor on `:bar`, then press `C-'` and you will see:
 
     foo('bar')
 
-#### Convert string to symbol
+### Convert string to symbol
 
 Insert:
 
@@ -34,7 +34,7 @@ Place cursor on `bar`, then press `C-:` and you will see:
 
     foo(:bar)
 
-#### Convert single quote string to double quote string and reverse
+### Convert single quote string to double quote string and reverse
 
 Insert:
 
@@ -44,7 +44,7 @@ Place cursor on `bar`, then press `C-"` and you will see:
 
     foo("bar")
 
-#### Convert double quote string to single quote string
+### Convert double quote string to single quote string
 
 Insert:
 
@@ -54,7 +54,7 @@ Place cursor on `bar`, then press `C-'` and you will see:
 
     foo('bar')
 
-#### Clear string content
+### Clear string content
 
 Insert:
 
@@ -64,7 +64,7 @@ Place cursor on `bar`, then press `C-;` and you will see:
 
     foo('')
     
-#### String interpolation
+### String interpolation
 
 Insert:
 
