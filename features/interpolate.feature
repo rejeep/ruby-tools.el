@@ -5,7 +5,7 @@ Feature: Interpolation
   Scenario: Interpolate when in double quote string
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to point "3"
+    And I place the cursor between "f" and "o"
     And I press "#"
     Then I should see ""f#{}oo""
     And the cursor should be between "{" and "}"
@@ -13,7 +13,7 @@ Feature: Interpolation
   Scenario: Interpolate when in double quote string at the beginning
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to the front of the word "foo"
     And I press "#"
     Then I should see ""#{}foo""
     And the cursor should be between "{" and "}"
@@ -21,7 +21,7 @@ Feature: Interpolation
   Scenario: Interpolate when in double quote string at the end
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to point "5"
+    And I go to the end of the word "foo"
     And I press "#"
     Then I should see ""foo#{}""
     And the cursor should be between "{" and "}"
@@ -29,7 +29,7 @@ Feature: Interpolation
   Scenario: Interpolate when in shell command
     When I insert "`foo`"
     And I turn on ruby-mode
-    And I go to point "3"
+    And I go to character "f"
     And I press "#"
     Then I should see "`f#{}oo`"
     And the cursor should be between "{" and "}"
@@ -37,7 +37,7 @@ Feature: Interpolation
   Scenario: Interpolate when in shell command at the beginning
     When I insert "`foo`"
     And I turn on ruby-mode
-    And I go to point "2"
+    And I go to the front of the word "foo"
     And I press "#"
     Then I should see "`#{}foo`"
     And the cursor should be between "{" and "}"
@@ -45,7 +45,7 @@ Feature: Interpolation
   Scenario: Interpolate when in shell command at the end
     When I insert "`foo`"
     And I turn on ruby-mode
-    And I go to point "5"
+    And I go to the end of the word "foo"
     And I press "#"
     Then I should see "`foo#{}`"
     And the cursor should be between "{" and "}"
@@ -61,7 +61,7 @@ Feature: Interpolation
   #   And I press "#"
   #   Then I should see "%(f#{}oo)"
   #   And the cursor should be between "{" and "}"
-  #  
+  #
   # Scenario: Interpolate when in percent syntax string at the beginning
   #   When I insert "%(foo)"
   #   And I turn on ruby-mode
@@ -69,7 +69,7 @@ Feature: Interpolation
   #   And I press "#"
   #   Then I should see "%(#{}foo)"
   #   And the cursor should be between "{" and "}"
-  #  
+  #
   # Scenario: Interpolate when in percent syntax string at the end
   #   When I insert "%(foo)"
   #   And I turn on ruby-mode
@@ -81,6 +81,6 @@ Feature: Interpolation
   Scenario: Do not interpolate when in single quote string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to point "3"
+    And I go to character "f"
     And I press "#"
     Then I should see "'f#oo'"

@@ -5,7 +5,7 @@ Feature: String To Symbol
   Scenario: Turn single quote string to symbol
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to point "3"
+    And I go to character "f"
     And I press "C-:"
     Then I should see ":foo"
     And the cursor should be between "f" and "oo"
@@ -13,7 +13,7 @@ Feature: String To Symbol
   Scenario: Turn double quote string to symbol
     When I insert ""foo""
     And I turn on ruby-mode
-    And I go to point "3"
+    And I go to character "f"
     And I press "C-:"
     Then I should see ":foo"
     And the cursor should be between "f" and "oo"
@@ -21,7 +21,7 @@ Feature: String To Symbol
   Scenario: Turn single quote string in method argument to symbol
     When I insert "foo('bar')"
     And I turn on ruby-mode
-    And I go to point "7"
+    And I go to character "b"
     And I press "C-:"
     Then I should see "foo(:bar)"
     And the cursor should be between "b" and "ar"
@@ -29,7 +29,7 @@ Feature: String To Symbol
   Scenario: Turn double quote string in method argument to symbol
     When I insert "foo("bar")"
     And I turn on ruby-mode
-    And I go to point "7"
+    And I go to character "b"
     And I press "C-:"
     Then I should see "foo(:bar)"
     And the cursor should be between "b" and "ar"
@@ -37,23 +37,26 @@ Feature: String To Symbol
   Scenario: Turn single quote string with underscores to symbol
     When I insert "'foo_bar'"
     And I turn on ruby-mode
-    And I go to point "5"
+    And I place the cursor between "o" and "_"
     And I press "C-:"
     Then I should see ":foo_bar"
     And the cursor should be between "foo" and "_bar"
-    
+
   Scenario: Turn string to symbol when at beginning of string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to point "2"
+    # And I go to the front of character "f"
+    And I go to character "'"
+    # And I go in front of the c
+    # And I place the cursor between "o" and "o"
     And I press "C-:"
     Then I should see ":foo"
     And the cursor should be before "foo"
-    
+
   Scenario: Turn string to symbol when at end of string
     When I insert "'foo'"
     And I turn on ruby-mode
-    And I go to point "5"
+    And I go to the end of the word "foo"
     And I press "C-:"
     Then I should see ":foo"
     And the cursor should be after "foo"
@@ -61,7 +64,7 @@ Feature: String To Symbol
   Scenario: Do not turn symbol to string when not on a string
     When I insert "foo('bar')"
     And I turn on ruby-mode
-    And I go to point "3"
+    And I place the cursor between "o" and "o"
     And I press "C-:"
     Then I should see "foo('bar')"
     And the cursor should be between "fo" and "o"
@@ -69,7 +72,7 @@ Feature: String To Symbol
   Scenario: Do not turn symbol to string when invalid symbol characters in string
     When I insert "'foo bar'"
     And I turn on ruby-mode
-    And I go to point "4"
+    And I place the cursor between "o" and "o"
     And I press "C-:"
     Then I should see "'foo bar'"
     And the cursor should be between "fo" and "o b"
@@ -77,7 +80,7 @@ Feature: String To Symbol
  Scenario: Turn empty string to symbol
     When I insert "''"
     And I turn on ruby-mode
-    And I go to point "2"
+    And I place the cursor between "'" and "'"
     And I press "C-:"
     Then I should see ":"
     And the cursor should be after ":"
