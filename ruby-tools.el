@@ -61,7 +61,7 @@
 
 (defun ruby-tools-looking-around (back at)
   "Check if looking backwards at BACK and forward at AT."
-  (and (looking-at at) (looking-back back)))
+  (and (looking-at-p at) (looking-back back)))
 
 (defun ruby-tools-symbol-at-point-p ()
   "Check if cursor is at a symbol or not."
