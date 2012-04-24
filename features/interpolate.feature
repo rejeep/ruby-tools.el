@@ -84,3 +84,32 @@ Feature: Interpolation
     And I go to character "f"
     And I press "#"
     Then I should see "'f#oo'"
+
+  Scenario: Do not interpolate outside strings
+    When I insert:
+    """
+    it "should ignore ~user directories if the user doesn't exist" do
+    
+    end
+
+    describe "on POSIX systems" do
+    """
+    And I turn on ruby-mode
+    And I go to line "2"
+    And I press "#"
+    Then I should not see:
+    """
+    it "should ignore ~user directories if the user doesn't exist" do
+    #{}
+    end
+
+    describe "on POSIX systems" do
+    """
+    But I should see:
+    """
+    it "should ignore ~user directories if the user doesn't exist" do
+    #
+    end
+
+    describe "on POSIX systems" do
+    """

@@ -100,9 +100,9 @@
   (interactive)
   (insert "#")
   (when (or
-         (ruby-tools-looking-around "\"[^\"]*" "[^\"]*\"")
-         (ruby-tools-looking-around "`[^`]*"   "[^`]*`")
-         (ruby-tools-looking-around "%([^(]*"  "[^)]*)"))
+         (ruby-tools-looking-around "\"[^\"\n]*" "[^\"\n]*\"")
+         (ruby-tools-looking-around "`[^`\n]*"   "[^`\n]*`")
+         (ruby-tools-looking-around "%([^(\n]*"  "[^)\n]*)"))
     (insert "{}")
     (forward-char -1)))
 
