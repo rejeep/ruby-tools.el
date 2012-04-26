@@ -87,6 +87,7 @@ Place cursor on `bar`, then press `#` and you will see:
 
 * Convert `do/end` block to `{/}` and reverse
 * Add/remove parenthesis on function call/definition
+* `re-builder` for Ruby regex syntax
 
 ## Contribution
 Contribution is much welcome! Ruby tools is tested using
