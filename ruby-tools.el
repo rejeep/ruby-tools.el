@@ -98,13 +98,21 @@
 (defun ruby-tools-interpolate ()
   "Interpolate with #{} in some places."
   (interactive)
+  (if (and mark-active (equal (point) (region-end)))
+      (exchange-point-and-mark))
   (insert "#")
   (when (or
          (ruby-tools-looking-around "\"[^\"\n]*" "[^\"\n]*\"")
          (ruby-tools-looking-around "`[^`\n]*"   "[^`\n]*`")
          (ruby-tools-looking-around "%([^(\n]*"  "[^)\n]*)"))
-    (insert "{}")
-    (forward-char -1)))
+    (cond (mark-active
+           (goto-char (region-beginning))
+           (insert "{")
+           (goto-char (region-end))
+           (insert "}"))
+          (t
+           (insert "{}")
+           (forward-char -1)))))
 
 (defun ruby-tools-to-symbol ()
   "Turn string at point to symbol."

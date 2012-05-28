@@ -113,3 +113,31 @@ Feature: Interpolation
 
     describe "on POSIX systems" do
     """
+
+  Scenario: Interpolate selected region
+    When I insert ""foo bar baz""
+    And I turn on ruby-mode
+    And I select "bar"
+    And I press "#"
+    Then I should see ""foo #{bar} baz""
+    And the cursor should be after "}"
+
+  Scenario: Interpolate selected region (from left to right)
+    When I insert ""foo bar baz""
+    And I turn on ruby-mode
+    And I go to point "6"
+    And I press "C-SPC"
+    And I press "C-u 3 C-f"
+    And I press "#"
+    Then I should see ""foo #{bar} baz""
+    And the cursor should be after "}"
+
+  Scenario: Interpolate selected region from (right to left)
+    When I insert ""foo bar baz""
+    And I turn on ruby-mode
+    And I go to point "9"
+    And I press "C-SPC"
+    And I press "C-u 3 C-b"
+    And I press "#"
+    Then I should see ""foo #{bar} baz""
+    And the cursor should be after "}"
