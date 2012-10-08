@@ -90,16 +90,15 @@ Place cursor on `bar`, then press `#` and you will see:
 * `re-builder` for Ruby regex syntax
 
 ## Contribution
-Contribution is much welcome! Ruby tools is tested using
-[Ecukes](http://ecukes.info). When Adding new features, please write
-tests for them!
+Contribution is much welcome! Ruby tools is tested using [Ecukes](http://ecukes.info). When
+adding new features, please write tests for them!
 
-To fetch Ecukes:
+Install [carton](https://github.com/rejeep/carton) if you haven't
+already, then:
 
     $ cd /path/to/ruby-tools
-    $ git submodule init
-    $ git submodule update
+    $ carton
 
-Run the tests with:
+Run all tests with:
 
-    $ ./util/ecukes/ecukes features
+    $ make
