@@ -4,6 +4,8 @@ Ruby tools is a collection of handy functions for Emacs
 to double quote string, double to single quote string, clear string,
 interpolate and more...
 
+[<img src="http://img.youtube.com/vi/xYMcVpTp4uY/0.jpg">](https://www.youtube.com/watch?v=xYMcVpTp4uY)
+
 ## Installation
 I recommend installing via ELPA, but manual installation is simple as well:
 
