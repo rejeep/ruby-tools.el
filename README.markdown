@@ -95,11 +95,11 @@ Place cursor on `bar`, then press `#` and you will see:
 Contribution is much welcome! Ruby tools is tested using [Ecukes](http://ecukes.info). When
 adding new features, please write tests for them!
 
-Install [carton](https://github.com/rejeep/carton) if you haven't
+Install [cask](https://github.com/cask/cask) if you haven't
 already, then:
 
     $ cd /path/to/ruby-tools
-    $ carton
+    $ cask
 
 Run all tests with:
 
