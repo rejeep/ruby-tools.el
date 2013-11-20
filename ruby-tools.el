@@ -83,7 +83,7 @@
 
 (defun ruby-tools-string-region ()
   "Return region for string at point."
-  (let ((orig-point (point)) (regex "\\([\"']\\)\\(?:[^\\1]\\|\\\\.\\)*\\(\\1\\)") beg end)
+  (let ((orig-point (point)) (regex "\\('\\(\\([^']\\)\\|\\(\'\\)\\)*'\\)\\|\\(\"\\(\\([^\"]\\)\\|\\(\\\"\\)\\)*\"\\)") beg end)
     (save-excursion
       (goto-char (line-beginning-position))
       (while (and (re-search-forward regex (line-end-position) t) (not (and beg end)))
