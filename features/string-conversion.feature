@@ -105,3 +105,11 @@ Feature: String conversion
     And I press "C-'"
     Then I should see "'foo 1 bar'"
     And the cursor should be between "'fo" and "o 1 bar'"
+
+  Scenario: Convert only the string relevant to the cursor position
+    When I insert ""foo" "bar""
+    And I turn on ruby-mode
+    And I go to character "o"
+    And I press "C-'"
+    Then I should see "'foo' "bar""
+    And the cursor should be between "'fo" and "o' "bar""
