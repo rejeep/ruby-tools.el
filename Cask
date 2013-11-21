@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package "ruby-tools" "0.1.0" "Collection of handy functions for ruby-mode.")
+(package-file "ruby-tools.el")
 
 (development
  (depends-on "ecukes"))
