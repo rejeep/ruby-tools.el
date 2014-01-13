@@ -122,7 +122,7 @@
              (min (nth 0 region))
              (max (nth 1 region))
              (content (buffer-substring-no-properties (1+ min) (1- max))))
-        (when (string-match-p "^\\([a-ZA-Z_][a-ZA-Z0-9_]+\\)?$" content)
+        (when (string-match-p "^\\([a-ZA-Z_][a-ZA-Z0-9_]*\\)?$" content)
           (let ((orig-point (point)))
             (delete-region min max)
             (insert (concat ":" content))

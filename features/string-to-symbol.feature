@@ -84,3 +84,11 @@ Feature: String To Symbol
     And I press "C-:"
     Then I should see ":"
     And the cursor should be after ":"
+
+ Scenario: Turn one character string to symbol
+    When I insert "'s'"
+    And I turn on ruby-mode
+    And I go to character "s"
+    And I press "C-:"
+    Then I should see ":s"
+    And the cursor should be after "s"
