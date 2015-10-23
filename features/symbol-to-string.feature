@@ -10,6 +10,14 @@ Feature: Symbol To String
     Then I should see "'foo'"
     And the cursor should be between "f" and "oo"
 
+  Scenario: Turn symbol to single quote string when the cursor is before colon
+    When I insert ":foo"
+    And I turn on ruby-mode
+    And I go to character ":"
+    And I press "C-'"
+    Then I should see "'foo'"
+    And the cursor should be before "foo"
+
   Scenario: Turn symbol to double quote string
     When I insert ":foo"
     And I turn on ruby-mode
@@ -67,6 +75,14 @@ Feature: Symbol To String
     And the cursor should be between "oo :b" and "ar ba"
 
   Scenario: Turn empty symbol to string
+    When I insert ":"
+    And I turn on ruby-mode
+    And I go to character ":"
+    And I press "C-'"
+    Then I should see "''"
+    And the cursor should be between "'" and "'"
+
+  Scenario: Turn empty symbol to string when the cursor is before colon
     When I insert ":"
     And I turn on ruby-mode
     And I go to character ":"

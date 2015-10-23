@@ -10,6 +10,14 @@ Feature: String To Symbol
     Then I should see ":foo"
     And the cursor should be between "f" and "oo"
 
+  Scenario: Turn single quote string to symbol when the cursor is before quote
+    When I insert "'foo'"
+    And I turn on ruby-mode
+    And I go to character "'"
+    And I press "C-:"
+    Then I should see ":foo"
+    And the cursor should be before "foo"
+
   Scenario: Turn double quote string to symbol
     When I insert ""foo""
     And I turn on ruby-mode
@@ -81,6 +89,14 @@ Feature: String To Symbol
     When I insert "''"
     And I turn on ruby-mode
     And I place the cursor between "'" and "'"
+    And I press "C-:"
+    Then I should see ":"
+    And the cursor should be after ":"
+
+ Scenario: Turn empty string to symbol when the cursor is before quote
+    When I insert "''"
+    And I turn on ruby-mode
+    And I go to character "'"
     And I press "C-:"
     Then I should see ":"
     And the cursor should be after ":"
