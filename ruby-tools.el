@@ -109,7 +109,9 @@
   (when (or
          (ruby-tools-looking-around "\"[^\"\n]*" "[^\"\n]*\"")
          (ruby-tools-looking-around "`[^`\n]*"   "[^`\n]*`")
-         (ruby-tools-looking-around "%([^(\n]*"  "[^)\n]*)"))
+         (ruby-tools-looking-around "%([^(\n]*"  "[^)\n]*)")
+         (ruby-tools-looking-around "%\[[^(\n]*"  "[^)\n]*\]")
+         (ruby-tools-looking-around "%\{[^(\n]*"  "[^)\n]*\}"))
     (cond (mark-active
            (goto-char (region-beginning))
            (insert "{")
